@@ -8,5 +8,5 @@ app.use(express.json());
 
 const port = 4000;
 app.listen(port, () => {
-  console.log(`Aerver is up on ${port}`);
+  console.log(`Server is up on ${port}`);
 });
