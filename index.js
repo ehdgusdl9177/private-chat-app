@@ -4,12 +4,25 @@ const app = express();
 
 const http = require("http");
 const { Server } = require("socket.io");
+const { default: mongoose } = require("mongoose");
 const server = http.createServer(app);
 const io = new Server(server);
 
 const publicDirectory = path.join(__dirname, "../public");
 app.use(express.static(publicDirectory));
 app.use(express.json());
+
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(
+    "mongodb+srv://k23129177:qwer1234@expree-cluster.9j385iu.mongodb.net/?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    console.log("디비 연결 성공");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 let users = [];
 io.on("connection", async (socket) => {
