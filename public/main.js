@@ -52,6 +52,25 @@ const socketConnect = async (username, userId) => {
   await socket.connect();
 };
 
+const setActiveUser = (element, username, userId) => {
+  title.innerHTML = username;
+  title.setAttribute("userId", userId);
+
+  const lists = document.getElementsByClassName("socket-users");
+  for (let i = 0; i < lists.length; i++) {
+    lists[i].classList.remove("table-active");
+  }
+  element.classList.add("table-active");
+
+  // 사용자 선택 후 메시지 영역 표시
+  msgDiv.classList.remove("d-none");
+  messages.classList.remove("d-none");
+  messages.innerHTML = "";
+  socket.emit("fetch-messages", { receiver: userId });
+  const notify = document.getElementById(userId);
+  notify.classList.add("d-none");
+};
+
 socket.on("users-data", ({ users }) => {
   // 자신은 제거하기
   const index = users.findIndex((user) => user.userId === socket.id);
