@@ -115,6 +115,15 @@ socket.on("users-data", ({ users }) => {
   }
 });
 
+socket.on("user-away", (userId) => {
+  const to = title.getAttribute("userId");
+  if (to === userId) {
+    title.innerHTML = "&nbsp";
+    msgDiv.classList.add("d-none");
+    messages.classList.add("d-none");
+  }
+});
+
 const sessUsername = localStroage.getItem("sesstion-username");
 const sessUserId = localStorage.getItem("session-userId");
 

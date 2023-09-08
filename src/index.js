@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const http = require("http");
 const { Server } = require("socket.io");
 const { default: mongoose } = require("mongoose");
-const { saveMessages } = require("./src/utils/messages");
+const { saveMessages } = require("./utils/messages");
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -68,7 +68,13 @@ io.on("connection", async (socket) => {
   socket.on("fetch-messages", () => {});
 
   // 유저가 방에서 나갔을 때
-  socket.on("disconnect", () => {});
+  socket.on("disconnect", () => {
+    users = users.filter((user) => user.userId !== socket.id);
+    // 사이드바 리스트에서 없애기
+    io.emit("users-data", { users });
+    // 대화 중이라면 대화창 없애기
+    io.emit("user-away", socket.id);
+  });
 });
 
 const port = 4000;
